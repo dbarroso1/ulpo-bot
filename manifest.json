@@ -1,0 +1,24 @@
+{
+    "name": "ULPO Bot",
+    "version": "0.0.1",
+    "description": "A Whatsapp Chat Assistant",
+    "manifest_version": 2,
+    "icons": {
+        "16": "src/media/ico/icon16.png",
+        "48": "src/media/ico/icon48.png",
+        "128": "src/media/ico/icon128.png"
+    },
+    "permissions": ["activeTab", "declarativeContent", "storage"],
+    "options_page": "src/dash.html",
+    "background": {
+        "scripts": ["src/js/background.js"],
+        "persistent": false
+    },
+    "content_scripts": [{
+        "matches": ["https://web.whatsapp.com/*"],
+        "js": [
+            "src/js/jquery-3.3.1.min.js",
+            "src/js/bot.js"
+        ]
+    }]
+}
