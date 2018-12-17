@@ -3,11 +3,19 @@
  * TODO: Working ON clicking to send
  */
 
+// Settings Variables
+var isActive = false
 var botCheck = 3000;
+
 var mssg_in = []
 // var mssg_out = []
-var clPhrase = ''
 var comTag = '$G'
+function activateBot() {
+    isActive = !isActive;
+    if(isActive==true){console.log("Active")}
+    if(isActive==false){console.log("IN-Active")}
+}
+
 function getConvo() {
     $('div.message-in').each(function () { mssg_in.indexOf($(this).text()) === -1 ? mssg_in.push($(this).text()) : null })
     // $('div.message-out').each(function () { mssg_out.indexOf($(this).text()) === -1 ? mssg_out.push($(this).html()) : null })
@@ -39,7 +47,7 @@ function sendCom(tag, command) {
         let b = a.replace(/,/g, "+")
         console.log(b)
         $('g').html("Let me Google that for you!\nhttps://www.google.com/search?q=" + b)
-        setTimeout(()=>{sendClick()},1000)
+        setTimeout(() => { sendClick() }, 1000)
 
     }
 
@@ -47,6 +55,8 @@ function sendCom(tag, command) {
 window.onload = function () {
     console.log("Listening to WhatsAPP")
     console.log("Conversations: ", $('._2wP_Y').length)
-    setInterval(() => { getConvo(); }, botCheck);
+    if (isActive == true) {
+        setInterval(() => { getConvo(); }, botCheck);
+    }
 }
 
