@@ -12,66 +12,78 @@
     <script type="text/javascript" src="/src/materialize/js/materialize.min.js"></script>
 </head>
 
-<body class="container" style="width:480px;padding:6px;">
-    <div class="row" style="margin:0">
-        <div class="col s12 center">
-            <h4 href="#" class="brand-logo">- ULPO-Bot -</h4>
+<body style="width:480px;">
+    <nav>
+        <div class="nav-wrapper white z-depth-0">
+            <a href="#" class="brand-logo blue-grey-text text-darken-4">- ULPO-Bot -</a>
         </div>
-    </div>
-    <div class="row">
-        <div class="col s12">
-        </div>
-        <div class="col s12 center" style="padding-bottom:12px;">
-            <h5> Activate <code>ULPO-BOT?</code></h5>
-            <div class="switch">
-                <label>
-                    Off
-                    <input id="botInitButton" type="checkbox">
-                    <span class="lever"></span>
-                    On
-                </label>
+    </nav>
+    <main class="container">
+        <div class="row">
+            <div class="col s12">
             </div>
-        </div>
-        <div class="col s12">
-            <ul class="tabs tabs-fixed-width">
-                <li class="tab col s3"><a class="blue-grey-text text-darken-4" href="#tab1">Settings</a></li>
-                <li class="tab col s3"><a class="blue-grey-text text-darken-4" href="#tab2">Commands</a></li>
-                <li class="tab col s3"><a class="blue-grey-text text-darken-4" href="#tab3">Console</a></li>
-            </ul>
-            <div id="tab1" class="card z-depth-0" style="margin-top:0;">
-                <div class="card-content">
-                    <span class="card-title">Settings:</span>
-                    <div class="row">
-                        <div class="col s12">
-                            <span class="flow-text">
-                                Bot sniff interval (ms):
-                            </span>
-                            <div class="input-field inline">
+            <div class="col s12 center" style="padding-bottom:12px;">
+                <h5> Activate <code>ULPO-BOT?</code></h5>
+                <div class="switch">
+                    <label>
+                        Off
+                        <input id="botInitButton" type="checkbox">
+                        <span class="lever"></span>
+                        On
+                    </label>
+                </div>
+            </div>
+            <div class="col s12">
+                <ul class="tabs tabs-fixed-width">
+                    <li class="tab col s3"><a class="blue-grey-text text-darken-4" href="#tab1">Settings</a></li>
+                    <li class="tab col s3"><a class="blue-grey-text text-darken-4" href="#tab2">Commands</a></li>
+                    <li class="tab col s3"><a class="blue-grey-text text-darken-4" href="#tab3">Console</a></li>
+                </ul>
+                <div id="tab1" class="card z-depth-0" style="margin-top:0;">
+                    <div class="card-content">
+                        <span class="card-title">Settings:</span>
+                        <div class="row valign-wrapper">
+                            <div class="col s8">
+                                <p class="flow-text">
+                                    Bot sniff interval (ms):
+                                </p>
+                            </div>
+                            <div class="col s4">
                                 <input id="botTimeInterval" type="number" step="500" min="500" max="10000">
+                            </div>
+                        </div>
+                        <div class="row valign-wrapper">
+                            <div class="col s8">
+                                <p class="flow-text">
+                                    Response Time (ms):
+                                </p>
+                            </div>
+                            <div class="col s4">
+                                <input id="botResponseTime" type="number" step="500" min="500" max="10000">
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div id="tab2" class="card z-depth-0" style="margin-top:0;">
-                <div class="card-content">
-                    <span class="card-title">Commands:</span>
-                    <div style=" height:250px; font-size:24px; overflow-y:scroll">
-                        <ul>
-                            <li>$G - Google Search</li>
+                <div id="tab2" class="card z-depth-0" style="margin-top:0;">
+                    <div class="card-content">
+                        <span class="card-title">Commands:</span>
+                        <div style=" height:250px; font-size:24px; overflow-y:scroll">
+                            <ul>
+                                <li>$G - Google Search</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab3" class="card z-depth-0" style="margin-top:0;">
+                    <div class="card-content">
+                        <span class="card-title">Console Window:</span>
+                        <ul class="terminal" id="zn-w3x9-console-log">
                         </ul>
                     </div>
                 </div>
             </div>
-            <div id="tab3" class="card z-depth-0" style="margin-top:0;">
-                <div class="card-content">
-                    <span class="card-title">Console Window:</span>
-                    <ul class="terminal" id="zn-w3x9-console-log">
-                    </ul>
-                </div>
-            </div>
         </div>
-    </div>
+    </main>
     <script type="text/javascript" src="/src/js/popup.js"></script>
 </body>
 

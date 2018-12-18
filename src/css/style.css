@@ -2,8 +2,12 @@ html {
     width: 480px;
     background: url('../media/escheresque_ste_wht.png');
     background-color: #000000;
-    background-repeat: repeat;
-}
+    background-repeat: repeat; 
+   }
+
+/*body{
+    border: solid 4px #0f0f0f;
+}*/
 
 .card-content {
     height: 350px;
@@ -51,7 +55,7 @@ html {
 }
 
 .tabs .indicator {
-    background-color: #607d8b;
+    background-color: #607d8b !important;
 }
 
 .tabs {

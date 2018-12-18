@@ -1,10 +1,12 @@
 // Bot Settings
 var botTimer = 1000;
+var botResTime = 5000;
 var botActive = false;
 
 // DOM Variables
 var botSwitch = document.getElementById('botInitButton');
 var botTimeInt = document.getElementById('botTimeInterval');
+var botResponseInt = document.getElementById('botResponseTime');
 var list = document.getElementById('zn-w3x9-console-log');
 
 const logger = function (log) {
@@ -38,7 +40,7 @@ function setBotTime() {
 window.onload = () => {
     chrome.storage.sync.get('botTime', (data) => {
         botTimer = data.botTime;
-        document.getElementById("botTimeInterval").value = data.botTime;
+        document.getElementById("botTimeInterval").value = (data.botTime || 3000);
     })
     chrome.storage.sync.get('botInit', (data) => {
         let status = data.botInit;
@@ -55,6 +57,8 @@ window.onload = () => {
     })
     botSwitch.addEventListener('change', setBotInit);
     botTimeInt.addEventListener('change', setBotTime);
+    
+    botResponseInt.value = botResTime;
 }
 
 $(document).ready(function () {
