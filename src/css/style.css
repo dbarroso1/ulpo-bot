@@ -1,8 +1,67 @@
-.brand-logo {
-    font-family: 'Rajdhani', sans-serif !important;
+html {
+    width: 480px;
+    background: url('../media/escheresque_ste_wht.png');
+    background-color: #000000;
+    background-repeat: repeat;
 }
 
-body {
-    background: url('../media/escheresque_ste_wht.png');
-    background-repeat: repeat;
+.card-content {
+    height: 350px;
+}
+
+.brand-logo {
+    font-family: 'Rajdhani', sans-serif !important;
+    margin: 0;
+}
+
+.terminal::-webkit-scrollbar {
+    width: 10px;
+}
+
+.terminal::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.terminal::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.terminal::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.terminal {
+    background: #1d1d1d;
+    height: 200px;
+    max-height: 300px;
+    padding: 6px 12px;
+    overflow-y: scroll;
+    border-radius: 6px;
+}
+
+.terminal li {
+    color: #ffffff;
+    margin-left: 6px;
+    font-family: Lucida Console, Lucida Sans Typewriter, monaco, Bitstream Vera Sans Mono, monospace;
+    font-size: 10px;
+}
+
+.terminal li::before {
+    content: "$ "
+}
+
+.tabs .indicator {
+    background-color: #607d8b;
+}
+
+.tabs {
+    border-radius: 4px 4px 0 0
+}
+
+.tab a {
+    color: #263238
+}
+
+input[type=number] {
+    text-align: right;
 }
