@@ -8,6 +8,7 @@
         "default_popup": "src/popup.html"
     },
     "permissions": [
+        "tabs",
         "storage",
         "webRequest",
         "webRequestBlocking",
@@ -31,6 +32,7 @@
                 "https://web.whatsapp.com/*"
             ],
             "js": [
+                "src/js/jquery-3.3.1.min.js",
                 "src/js/bot.js"
             ]
         }

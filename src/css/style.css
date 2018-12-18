@@ -2,12 +2,16 @@ html {
     width: 480px;
     background: url('../media/escheresque_ste_wht.png');
     background-color: #000000;
-    background-repeat: repeat; 
-   }
+    background-repeat: repeat;
+}
 
 /*body{
     border: solid 4px #0f0f0f;
 }*/
+
+nav {
+    width: 100vw !important;
+}
 
 .card-content {
     height: 350px;
@@ -34,20 +38,24 @@ html {
     background: #555;
 }
 
-.terminal {
+.terminal-wrapper {
+    height: 300px;
     background: #1d1d1d;
-    height: 200px;
-    max-height: 300px;
-    padding: 6px 12px;
-    overflow-y: scroll;
     border-radius: 6px;
+    overflow-y: scroll;
+}
+
+.terminal {
+    height: 100%;
+    width: 100%;
+    padding: 6px;
 }
 
 .terminal li {
     color: #ffffff;
     margin-left: 6px;
     font-family: Lucida Console, Lucida Sans Typewriter, monaco, Bitstream Vera Sans Mono, monospace;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .terminal li::before {
@@ -68,4 +76,89 @@ html {
 
 input[type=number] {
     text-align: right;
+}
+
+.bot-switch {
+    margin-right: 12px;
+}
+
+.collapsible-body {
+    padding: 1rem !important;
+}
+
+.com-list {
+    font-size: 12px;
+}
+
+.com-list code {
+    padding: 6px;
+    padding-right: 32px;
+    margin-left: 6px;
+    border-radius: 6px;
+    background: #1d1d1d;
+    color: #f1f1f1
+}
+
+.com-list .com-title {
+    font-size: 14px;
+    padding-bottom: 6px;
+}
+
+.com-list .com-resp {
+    font-weight: 500;
+    padding: 6px;
+    border: solid 1px rgb(209, 209, 209);
+}
+
+.com-list .com-copy {
+    position: relative;
+}
+
+.com-list .com-copy i:hover {
+    color: #607d8b
+}
+
+.com-list i {
+    position: absolute;
+    right: 4px;
+    top: 0px;
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+}
+
+.material-icons.md-18 {
+    font-size: 18px;
+}
+
+.material-icons.md-24 {
+    font-size: 24px;
+}
+
+.material-icons.md-36 {
+    font-size: 36px;
+}
+
+.material-icons.md-48 {
+    font-size: 48px;
 }

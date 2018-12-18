@@ -1,14 +1,42 @@
-var isBotActive = false;
 
-console.log("Whatsapp Activated")
-chrome.runtime.onMessage.addListener(
-    function (request, sender, sendResponse) {
-        console.log(sender.tab ?
-            "from a content script:" + sender.tab.url :
-            "from the extension");
-        if (request.greeting == "hello")
-            sendResponse({ farewell: "goodbye" });
-    });
+var isBotActive, botInterval;
+var intervalId;
+var mssg_in = [];
+
+console.log("On WhatsApp Web")
+
+function getConvo(isActive) {
+    console.log("Checking...")
+    $('div.message-in').each(function () { mssg_in.indexOf($(this).text()) === -1 ? mssg_in.push($(this).text()) : null })
+    console.log(mssg_in)
+}
+function initBotSniffing(bool) {
+    var _x = bool;
+    if (isBotActive == true) { intervalId = setInterval(() => { getConvo() }, botInterval) }
+    else { clearInterval(intervalId) }
+
+}
+
+
+chrome.runtime.sendMessage({ init: true }, function (res) {
+    isBotActive = res.bot_act;
+    botInterval = res.bot_int;
+    initBotSniffing(isBotActive);
+});
+
+chrome.runtime.onMessage.addListener((req) => {
+    isBotActive = req.botInit;
+    initBotSniffing(isBotActive);
+});
+
+
+
+
+
+// 
+
+
+
 
 /**
  * 

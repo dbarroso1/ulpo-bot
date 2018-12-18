@@ -1,9 +1,7 @@
 // Bot Settings
-var botTimer = 1000;
-var botResTime = 5000;
-var botActive = false;
+var botTimer, botResTime, botActive;
 
-// DOM Variables
+// Popup DOM Variables
 var botSwitch = document.getElementById('botInitButton');
 var botTimeInt = document.getElementById('botTimeInterval');
 var botResponseInt = document.getElementById('botResponseTime');
@@ -11,24 +9,21 @@ var list = document.getElementById('zn-w3x9-console-log');
 
 const logger = function (log) {
     var entry = document.createElement('li');
-    var time = new Date(Date.now()).toLocaleString('en-US');
-    entry.appendChild(document.createTextNode(time + ": [ULPO-BOT] " + log));
+    var a = new Date(), b = a.getHours().toLocaleString('en-US'), c = a.getMinutes().toLocaleString('en-US'), d = b + ":" + c
+    entry.appendChild(document.createTextNode(`[ULPO-BOT] ${log}`));
     list.appendChild(entry);
 }
 
-
-// Functions for BOT
 function setBotInit() {
-    botActive = !botActive
-    chrome.storage.sync.set({ botInit: botActive });
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, { greeting: "hello" }, function (response) {
-            console.log(response.farewell);
+    botActive = !botActive;
+    chrome.storage.sync.set({ botInit: botActive }, () => {
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, { botInit: botActive });
         });
     });
-    if (botActive == true) { logger('STATUS: Active'); }
-    else if (botActive == false) { logger('STATUS: Inactive'); }
 
+    if (botActive == true) { logger('Status: ACTIVE'); }
+    else if (botActive == false) { logger('Status: INACTIVE'); }
 }
 
 function setBotTime() {
@@ -38,30 +33,29 @@ function setBotTime() {
 }
 
 window.onload = () => {
-    chrome.storage.sync.get('botTime', (data) => {
-        botTimer = data.botTime;
-        document.getElementById("botTimeInterval").value = (data.botTime || 3000);
-    })
+    chrome.storage.sync.get('botTime', (data) => { botTimer = data.botTime; botTimeInt.value = botTimer || 3000; })
     chrome.storage.sync.get('botInit', (data) => {
-        let status = data.botInit;
-        if (status) {
-            botActive = status
+        botActive = data.botInit;
+        if (botActive) {
             botSwitch.setAttribute("checked", "checked");
-            logger('STATUS: Active');
+            logger('Status: ACTIVE');
         }
         else {
-            botActive = status
             botSwitch.removeAttribute("checked", "checked");
-            logger('STATUS: Inactive');
+            logger('Status: INACTIVE');
         }
     })
+
     botSwitch.addEventListener('change', setBotInit);
     botTimeInt.addEventListener('change', setBotTime);
-    
-    botResponseInt.value = botResTime;
+
+    var tabs = document.querySelectorAll('.tabs')
+    var collapsible = document.querySelectorAll('.collapsible');
+    for (var i = 0; i < collapsible.length; i++) {
+        M.Collapsible.init(collapsible[i]);
+    }
+    for (var i = 0; i < tabs.length; i++) {
+        M.Tabs.init(tabs[i]);
+    }
 }
 
-$(document).ready(function () {
-    $('ul.tabs').tabs();
-    $('ul.tabs').tabs('select_tab', 'tab_id');
-}); 
