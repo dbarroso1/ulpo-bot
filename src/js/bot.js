@@ -6,9 +6,22 @@ var mssg_in = [];
 console.log("On WhatsApp Web")
 
 function getConvo(isActive) {
-    console.log("Checking...")
-    $('div.message-in').each(function () { mssg_in.indexOf($(this).text()) === -1 ? mssg_in.push($(this).text()) : null })
-    console.log(mssg_in)
+    let len = mssg_in.length
+    if (len <= 1) {
+        console.log("Checking...")
+        $('div.message-in').each(
+            function (y) {
+                function filter() {
+                    let _x = $(this).text();
+                    if (_x.indexOf('$g')) { mssg_in.push($(this).text()) }
+                }
+                mssg_in.indexOf($(this).text()) === -1 ? filter(mssg_in.indexOf($(this).text())) : null
+            })
+        console.log(mssg_in)
+    }
+    else {
+        return null
+    }
 }
 function initBotSniffing(bool) {
     var _x = bool;
@@ -39,7 +52,7 @@ chrome.runtime.onMessage.addListener((req) => {
 
 
 /**
- * 
+ *
 var botCheck = 3000;
 var mssg_in = [];
 var isActive = false;
