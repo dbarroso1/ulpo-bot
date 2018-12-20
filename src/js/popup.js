@@ -12,6 +12,7 @@ const logger = function (log) {
     var a = new Date(), b = a.getHours().toLocaleString('en-US'), c = a.getMinutes().toLocaleString('en-US'), d = b + ":" + c
     entry.appendChild(document.createTextNode(`[ULPO-BOT] ${log}`));
     list.appendChild(entry);
+    chrome.runtime.sendMessage({ logger: list })
 }
 
 function setBotInit() {

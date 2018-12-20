@@ -90,6 +90,14 @@ input[type=number] {
     font-size: 12px;
 }
 
+.collapsible-header code {
+    padding: 2px 12px; 
+    margin-right: 12px;
+    border-radius: 3px;
+    background: #1d1d1d;
+    color: #f1f1f1
+}
+
 .com-list code {
     padding: 6px;
     padding-right: 32px;
@@ -107,6 +115,7 @@ input[type=number] {
 .com-list .com-resp {
     font-weight: 500;
     padding: 6px;
+    border-radius: 4px;
     border: solid 1px rgb(209, 209, 209);
 }
 
