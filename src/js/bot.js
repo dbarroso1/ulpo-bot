@@ -202,7 +202,6 @@ const start = (_chats, cnt = 0) => {
         else if (mssg.indexOf('/PP') > -1) {
             var pooper = mssg.split(" ").pop()
             var int_runs = 0;
-
             sendText = `Every party needs a pooper that's why they invited you 👉${pooper || "everybody"}👈`
 
             var _interval = setInterval(() => {
@@ -210,7 +209,6 @@ const start = (_chats, cnt = 0) => {
                 if (int_runs == 4) { clearInterval(_interval); int_runs = 0; }
                 else { sendMessage(null, sendText.trim(), () => { return null }); }
             }, 5000)
-
         }
         else if (mssg.indexOf('/ROAST') > -1) {
             let _a = lastMsg.split(" "), _b = _a.pop();
