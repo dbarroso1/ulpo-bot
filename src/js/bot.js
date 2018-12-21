@@ -2,6 +2,7 @@
 var isBotActive, botInterval;
 var intervalId;
 var mssg_in = [];
+var gc_user_list = ["Michael", "Carlos", "Damian", "Geniel", "Lemuel", "Nardiel", "Obi", "Ricky", "Yoel", "Dilean"]
 var chat_name = "Test";
 var lastMessageOnChat = false;
 var ignoreLastMsg = {};
@@ -220,6 +221,15 @@ const start = (_chats, cnt = 0) => {
 
     // what to answer back?
     let sendText
+
+    if (lastMsg.toUpperCase().indexOf('@ROAST') > -1) {
+        // @ROAST < Name (gc_user_list) || Random > 
+        let _a = lastMsg.split(" "), _b = _a.pop()
+        let victim = gc_user_list[Math.floor(Math.random() * gc_user_list.length)],
+            first_user = gc_user_list[Math.floor(Math.random() * gc_user_list.length)]
+
+        sendText = `*ULPO ROAST CHALLANGE* \n Todays victim: *${victim}* \n First on the stage is _${first_user}_ \n Rules: 1) None, go wild you filthy animals. `
+    }
     if (lastMsg.toUpperCase().indexOf('@G') > -1) {
         let _a = lastMsg.split(" "), _b = _a.shift(), _c = _a.shift();
         let = newMsg = _a.toString().replace(/,|\s/g, "+");
@@ -291,10 +301,10 @@ chrome.runtime.onMessage.addListener((req) => {
 
 
 /**
- 
+
 function botResponder() {
     var phrase = mssg_in[0].replace("$g", '').replace(/\s/g, '+')
-    // WORKS $('button._35EW6').click() 
+    // WORKS $('button._35EW6').click()
     console.log("https://www.google.com/search?q=" + phrase)
 }
 function initBot() {

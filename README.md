@@ -8,3 +8,10 @@ a bot for ulpo
 * popup.js can now controll background.js and Bot.js
 
 TODO: Need to make Whatsapp Listener, and parse data. 
+
+### Commands
+* @ROAST <NAME or RANDOM>
+* @Timer <SECONDS or MINUTES>
+* @G <PHRASE TO GOOGLE>
+* @TIME
+* @JOKE
