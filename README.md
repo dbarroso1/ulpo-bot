@@ -15,3 +15,4 @@ TODO: Need to make Whatsapp Listener, and parse data.
 * @G <PHRASE TO GOOGLE>
 * @TIME
 * @JOKE
+* @Motivation

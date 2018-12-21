@@ -1,4 +1,3 @@
-
 var isBotActive, botInterval;
 var intervalId;
 var mssg_in = [];
@@ -120,8 +119,9 @@ const goAgain = (fn, sec) => {
     // selectChat(chat)
     if (isBotActive) {
         setTimeout(fn, sec * 1000)
+    } else {
+        return null
     }
-    else { return null }
 }
 
 // Dispath an event (of click, por instance)
@@ -185,6 +185,7 @@ const start = (_chats, cnt = 0) => {
     // get next unread chat
     const chats = _chats || getUnreadChats();
     const chat = chats[cnt];
+    var bot_foucused = false; // If the bot is foucused 
 
     var processLastMsgOnChat = false;
     var lastMsg;
@@ -209,49 +210,59 @@ const start = (_chats, cnt = 0) => {
     var title;
     if (!processLastMsgOnChat) {
         title = getElement("chat_title", chat).title + '';
-        lastMsg = (getElement("chat_lastmsg", chat) || { innerText: '' }).innerText.trim(); //.last-msg returns null when some user is typing a message to me
+        lastMsg = (getElement("chat_lastmsg", chat) || {
+            innerText: ''
+        }).innerText.trim(); //.last-msg returns null when some user is typing a message to me
     } else {
         title = getElement("selected_title").title;
     }
     // avoid sending duplicate messaegs
     if (ignoreLastMsg[title] && (ignoreLastMsg[title]) == lastMsg) {
         console.log(new Date(), 'nothing to do now... (2)', title, lastMsg);
-        return goAgain(() => { start(chats, cnt + 1) }, 0.1);
+        return goAgain(() => {
+            start(chats, cnt + 1)
+        }, 0.1);
     }
 
     // what to answer back?
     let sendText
 
+    if (lastMsg.toUpperCase().indexOf('@G') > -1) {
+        let _a = lastMsg.split(" "),
+            _b = _a.shift(),
+            _c = _a.shift();
+        let newMsg = _a.toString().replace(/,|\s/g, "+");
+        sendText = `Let Me Google that For you... \nhttps://lmgtfy.com/?q=${newMsg}`;
+    }
+
+
     if (lastMsg.toUpperCase().indexOf('@ROAST') > -1) {
         // @ROAST < Name (gc_user_list) || Random > 
-        let _a = lastMsg.split(" "), _b = _a.pop()
-        let victim = gc_user_list[Math.floor(Math.random() * gc_user_list.length)],
-            first_user = gc_user_list[Math.floor(Math.random() * gc_user_list.length)]
-
-        sendText = `*ULPO ROAST CHALLANGE* \n Todays victim: *${victim}* \n First on the stage is _${first_user}_ \n Rules: 1) None, go wild you filthy animals. `
-    }
-    if (lastMsg.toUpperCase().indexOf('@G') > -1) {
-        let _a = lastMsg.split(" "), _b = _a.shift(), _c = _a.shift();
-        let = newMsg = _a.toString().replace(/,|\s/g, "+");
-        sendText = `Let Me Google that For you... \nhttps://lmgtfy.com/?q=${newMsg}`
+        let _a = lastMsg.split(" "),
+            _b = _a.pop();
+        var victim = gc_user_list[Math.floor(Math.random() * gc_user_list.length)]
+        var first_user = gc_user_list[Math.floor(Math.random() * gc_user_list.length)];
+        sendText = `*ULPO ROAST CHALLANGE* \n Todays victim: *${victim}* \n First on the stage is _${first_user}_ \n Rules: 1) None, go wild you filthy animals. `;
     }
 
     if (lastMsg.toUpperCase().indexOf('@ROLL') > -1) {
-        let _a = lastMsg.toString().split(" "), _b = _a.pop
+        let _a = lastMsg.toString().split(" "),
+            _b = _a.pop
         let num = Math.floor(Math.random() * 100);
         console.log(_b);
-        sendText = `Dice Roll gives... \n \n *${num}*`;
+        sendText = `Dice Roll gives... \n *${num}*`;
     }
     if (lastMsg.toUpperCase().indexOf('@HELP') > -1) {
         sendText = `Cool ${title}! Some commands that you can send me:
-            - *$G*
-            - *@ROLL*
-            - *@TIME*
-            - *@JOKE*`
+            - *$G* Let me google that for you...
+            - *@ROLL* to get a random number between 1 - 100
+            - *@TIME* to get the current Time
+            - *@JOKE* make pablo tell a joke
+            - *@ROAST* Initiate a Roast Battle, a random victim will be chosen`;
     }
 
     if (lastMsg.toUpperCase().indexOf('@TIME') > -1) {
-        sendText = `Don't you have a clock, dude? \n *${new Date()}*`
+        sendText = `Don't you have a clock, dude? \n *${new Date()}*`;
     }
 
     if (lastMsg.toUpperCase().indexOf('@JOKE') > -1) {
@@ -262,7 +273,9 @@ const start = (_chats, cnt = 0) => {
     if (!sendText) {
         ignoreLastMsg[title] = lastMsg;
         console.log(new Date(), 'new message ignored -> ', title, lastMsg);
-        return goAgain(() => { start(chats, cnt + 1) }, 0.1);
+        return goAgain(() => {
+            start(chats, cnt + 1)
+        }, 0.1);
     }
 
     console.log(new Date(), 'new message to process, uhull -> ', title, lastMsg);
@@ -271,23 +284,31 @@ const start = (_chats, cnt = 0) => {
     if (!processLastMsgOnChat) {
         selectChat(chat, () => {
             sendMessage(chat, sendText.trim(), () => {
-                goAgain(() => { start(chats, cnt + 1) }, 1);
+                goAgain(() => {
+                    start(chats, cnt + 1)
+                }, 1);
             });
         })
     } else {
         sendMessage(null, sendText.trim(), () => {
-            goAgain(() => { start(chats, cnt + 1) }, 1);
+            goAgain(() => {
+                start(chats, cnt + 1)
+            }, 1);
         });
     }
 }
 
 function initBotSniffing(bool) {
     var _x = bool;
-    if (isBotActive == true) { start(); }
+    if (isBotActive == true) {
+        start();
+    }
 }
 
 
-chrome.runtime.sendMessage({ init: true }, function (res) {
+chrome.runtime.sendMessage({
+    init: true
+}, function (res) {
     isBotActive = res.bot_act;
     botInterval = res.bot_int;
     initBotSniffing(isBotActive);
