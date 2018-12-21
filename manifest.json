@@ -12,7 +12,8 @@
         "storage",
         "webRequest",
         "webRequestBlocking",
-        "https://web.whatsapp.com/*"
+        "https://web.whatsapp.com/*",
+        "https://wol.jw.org/*"
     ],
     "icons": {
         "16": "src/media/ico/icon16.png",

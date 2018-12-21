@@ -5,49 +5,39 @@ var gc_user_list = ["Michael", "Carlos", "Damian", "Geniel", "Lemuel", "Nardiel"
 var chat_name = "Test";
 var lastMessageOnChat = false;
 var ignoreLastMsg = {};
-var elementConfig = {
-    "chats": [1, 0, 5, 2, 0, 3, 0, 0, 0],
-    "chat_icons": [0, 0, 1, 1, 1, 0],
-    "chat_title": [0, 0, 1, 0, 0, 0, 0],
-    "chat_lastmsg": [0, 0, 1, 1, 0, 0],
-    "chat_active": [0, 0],
-    "selected_title": [1, 0, 5, 3, 0, 1, 1, 0, 0, 0, 0]
-};
-const jokeList = [
-    `Husband and Wife had a Fight.
-    *Wife* : - calls mom - He fought with me again, I am coming to you.
-    *Mom* : No daughter, he must pay for his mistake, I am comming to stay with U!`,
-    `*Husband*: Darling, years ago u had a figure like Coke bottle.
-    *Wife*: Yes darling I still do, only difference is earlier it was 300ml now it's 1.5 ltr.`,
-
-    `God created the earth, 
-    God created the woods, 
-    God created you too, 
-    But then, even God makes mistakes sometimes!`,
-
-    `What is a difference between a Kiss, a Car and a Monkey? 
-    A kiss is so dear, a car is too dear and a monkey is _you_, dear.`,
-
-    `Here's a joke... \n \n \n \n \n \n  ... *Goku* ...    `,
-    `Anybody Seen a Shelby GT anywhere? \n it was parked outside last night...`,
-]
-
+var elementConfig = { "chats": [1, 0, 5, 2, 0, 3, 0, 0, 0], "chat_icons": [0, 0, 1, 1, 1, 0], "chat_title": [0, 0, 1, 0, 0, 0, 0], "chat_lastmsg": [0, 0, 1, 1, 0, 0], "chat_active": [0, 0], "selected_title": [1, 0, 5, 3, 0, 1, 1, 0, 0, 0, 0] };
+const flan_list = [`Wait for me...`, `Cant, im busy.... er.. with things... and stuff....`, `...Ramen instead?`, `Only if you are buying.`, `All in favor??`],
+    greeting_list = [`Good Morning everybody!`, `Good Morning!`, `Hello my people`, `Wasssaaaaa.....`, `Yo, yo..`, `Hi`, `Harro..`],
+    linda_list = [`👀👀👀👀👀👀👀👀👀`, `Hey, you cant say that word here.`, `Stop, you'll hurt little Damians feelings!`, `uh, oh... fighting words....`],
+    love_list = [`Love you all 😘😘 `, `Hey, Even a robot called Pablo can love... 😘😘😘`, `The best thing of my exsistance is you guys... \n \n well tbh, i only exsist because of you guys.`],
+    jokeList = [
+        `Husband and Wife had a Fight.
+        *Wife* : - calls mom - He fought with me again, I am coming to you.
+        *Mom* : No daughter, he must pay for his mistake, I am comming to stay with U!`,
+        `*Husband*: Darling, years ago u had a figure like Coke bottle.
+        *Wife*: Yes darling I still do, only difference is earlier it was 300ml now it's 1.5 ltr.`,
+        `God created the earth, 
+        God created the woods, 
+        God created you too, 
+        But then, even God makes mistakes sometimes!`,
+        `What is a difference between a Kiss, a Car and a Monkey? 
+        A kiss is so dear, a car is too dear and a monkey is _you_, dear.`,
+        `Here's a joke... \n \n \n \n \n \n  ... *Goku* ...    `,
+        `Anybody Seen a Shelby GT anywhere? \n it was parked outside last night...`,
+    ]
+var daily_text, daily_text_body;
 console.log("On WhatsApp Web")
+
 // Get random value between a range
-function rand(high, low = 0) {
-    return Math.floor(Math.random() * (high - low + 1) + low);
-}
+function rand(high, low = 0) { return Math.floor(Math.random() * (high - low + 1) + low); }
+
 
 function getElement(id, parent) {
-    if (!elementConfig[id]) {
-        return false;
-    }
+    if (!elementConfig[id]) { return false; }
     var elem = !parent ? document.body : parent;
     var elementArr = elementConfig[id];
     elementArr.forEach(function (pos) {
-        if (!elem.childNodes[pos]) {
-            return false;
-        }
+        if (!elem.childNodes[pos]) { return false; }
         elem = elem.childNodes[pos];
     });
     return elem;
@@ -58,16 +48,12 @@ function getLastMsg() {
     var pos = messages.length - 1;
 
     while (messages[pos] && (messages[pos].classList.contains('msg-system') || messages[pos].querySelector('.message-out'))) {
-        pos--;
-        if (pos <= -1) {
-            return false;
-        }
+        pos--; if (pos <= -1) { return false; }
     }
     if (messages[pos] && messages[pos].querySelector('.selectable-text')) {
         return messages[pos].querySelector('.selectable-text').innerText.trim();
-    } else {
-        return false;
     }
+    else { return false; }
 }
 
 function getUnreadChats() {
@@ -76,13 +62,9 @@ function getUnreadChats() {
     if (chats) {
         chats = chats.childNodes;
         for (var i in chats) {
-            if (!(chats[i] instanceof Element)) {
-                continue;
-            }
+            if (!(chats[i] instanceof Element)) { continue; }
             var icons = getElement("chat_icons", chats[i]).childNodes;
-            if (!icons) {
-                continue;
-            }
+            if (!icons) { continue; }
             for (var j in icons) {
                 if (icons[j] instanceof Element) {
                     if (!(icons[j].childNodes[0].getAttribute('data-icon') == 'muted' || icons[j].childNodes[0].getAttribute('data-icon') == 'pinned')) {
@@ -98,31 +80,14 @@ function getUnreadChats() {
 
 function didYouSendLastMsg() {
     var messages = document.querySelectorAll('.msg');
-    if (messages.length <= 0) {
-        return false;
-    }
+    if (messages.length <= 0) { return false; }
     var pos = messages.length - 1;
 
-    while (messages[pos] && messages[pos].classList.contains('msg-system')) {
-        pos--;
-        if (pos <= -1) {
-            return -1;
-        }
-    }
-    if (messages[pos].querySelector('.message-in')) {
-        return true;
-    }
+    while (messages[pos] && messages[pos].classList.contains('msg-system')) { pos--; if (pos <= -1) { return -1; } }
+    if (messages[pos].querySelector('.message-in')) { return true; }
     return false;
 }
-const goAgain = (fn, sec) => {
-    // const chat = document.querySelector('div.chat:not(.unread)')
-    // selectChat(chat)
-    if (isBotActive) {
-        setTimeout(fn, sec * 1000)
-    } else {
-        return null
-    }
-}
+const goAgain = (fn, sec) => { if (isBotActive) { setTimeout(fn, sec * 1000) } else { return null } }
 
 // Dispath an event (of click, por instance)
 const eventFire = (el, etype) => {
@@ -139,14 +104,10 @@ const selectChat = (chat, cb) => {
     const loopFewTimes = () => {
         setTimeout(() => {
             const titleMain = getElement("selected_title").title;
-            if (titleMain !== undefined && titleMain != title) {
-                console.log('not yet');
-                return loopFewTimes();
-            }
+            if (titleMain !== undefined && titleMain != title) { console.log('not yet'); return loopFewTimes(); }
             return cb();
         }, 300);
     }
-
     loopFewTimes();
 }
 
@@ -155,13 +116,10 @@ const sendMessage = (chat, message, cb) => {
     //avoid duplicate sending
     var title;
 
-    if (chat) {
-        title = getElement("chat_title", chat).title;
-    } else {
-        title = getElement("selected_title").title;
-    }
-    ignoreLastMsg[title] = message;
+    if (chat) { title = getElement("chat_title", chat).title; }
+    else { title = getElement("selected_title").title; }
 
+    ignoreLastMsg[title] = message;
     messageBox = document.querySelectorAll("[contenteditable='true']")[0];
 
     //add text into input field
@@ -174,29 +132,23 @@ const sendMessage = (chat, message, cb) => {
 
     //Click at Send Button
     eventFire(document.querySelector('span[data-icon="send"]'), 'click');
-
     cb();
 }
 
-//
-// MAIN LOGIC
-//
+/* BOT LOGIC */
 const start = (_chats, cnt = 0) => {
-    // get next unread chat
     const chats = _chats || getUnreadChats();
     const chat = chats[cnt];
     var bot_foucused = false; // If the bot is foucused 
-
     var processLastMsgOnChat = false;
-    var lastMsg;
+    var lastMsg, title;
 
     if (!lastMessageOnChat) {
-        if (false === (lastMessageOnChat = getLastMsg())) {
-            lastMessageOnChat = true; //to prevent the first "if" to go true everytime
-        } else {
-            lastMsg = lastMessageOnChat;
-        }
-    } else if (lastMessageOnChat != getLastMsg() && getLastMsg() !== false && !didYouSendLastMsg()) {
+        //to prevent the first "if" to go true everytime
+        if (false === (lastMessageOnChat = getLastMsg())) { lastMessageOnChat = true; }
+        else { lastMsg = lastMessageOnChat; }
+    }
+    else if (lastMessageOnChat != getLastMsg() && getLastMsg() !== false && !didYouSendLastMsg()) {
         lastMessageOnChat = lastMsg = getLastMsg();
         processLastMsgOnChat = true;
     }
@@ -207,108 +159,128 @@ const start = (_chats, cnt = 0) => {
     }
 
     // get infos
-    var title;
     if (!processLastMsgOnChat) {
         title = getElement("chat_title", chat).title + '';
-        lastMsg = (getElement("chat_lastmsg", chat) || {
-            innerText: ''
-        }).innerText.trim(); //.last-msg returns null when some user is typing a message to me
-    } else {
-        title = getElement("selected_title").title;
+        lastMsg = (getElement("chat_lastmsg", chat) || { innerText: '' }).innerText.trim(); //.last-msg returns null when some user is typing a message to me
     }
+    else { title = getElement("selected_title").title; }
+
     // avoid sending duplicate messaegs
     if (ignoreLastMsg[title] && (ignoreLastMsg[title]) == lastMsg) {
         console.log(new Date(), 'nothing to do now... (2)', title, lastMsg);
-        return goAgain(() => {
-            start(chats, cnt + 1)
-        }, 0.1);
+        return goAgain(() => { start(chats, cnt + 1) }, 0.1);
     }
 
     // what to answer back?
-    let sendText
+    let sendText;
+    let mssg = lastMsg.toUpperCase();
 
-    if (lastMsg.toUpperCase().indexOf('@G') > -1) {
-        let _a = lastMsg.split(" "),
-            _b = _a.shift(),
-            _c = _a.shift();
-        let newMsg = _a.toString().replace(/,|\s/g, "+");
-        sendText = `Let Me Google that For you... \nhttps://lmgtfy.com/?q=${newMsg}`;
-    }
+    if (!bot_foucused) {
+        //if (mssg.indexOf('👀👀👀')) { sendText = `👀👀👀👀👀👀👀👀👀` }
+        // Ohaio! Greetings command
+        if (mssg.indexOf('OHAYO') > -1) { sendText = greeting_list[rand(greeting_list.length - 1)]; }
+        else if (mssg.indexOf('FLANNYS?') > -1) { sendText = flan_list[rand(flan_list.length - 1)]; }
+        else if (mssg.indexOf('LOVE YOU') > -1) { sendText = love_list[rand(love_list.length - 1)]; }
+        else if (mssg.indexOf('LINDA') > -1) { sendText = linda_list[rand(linda_list.length - 1)]; }
+        else if (mssg.indexOf('SAME') > -1) { sendText = `s a m e....`; }
+        else if (mssg.indexOf('KYSLEV') > -1) { sendText = `no, same...`; }
+        else if (mssg.indexOf('FASTING') > -1) { sendText = `Fasting is for Homos...`; }
+        else if (mssg.indexOf('/JOKE') > -1) { sendText = jokeList[rand(jokeList.length - 1)]; }
+        else if (mssg.indexOf('/DT') > -1) { sendText = `*Daily Text* \n ${daily_text} \n \n ${daily_text_body}` }
+        else if (mssg.indexOf('/TIME') > -1) { sendText = ` Don't you have a clock, dude? \n🕐:*${new Date()}*`; }
+        else if (mssg.indexOf('/G') > -1) {
+            let _a = lastMsg.split(" "), _b = _a.shift(), _c = _a.shift();
+            let newMsg = _a.toString().replace(/,|\s/g, "+");
+            sendText = ` Let Me Google that For you... \nhttps://lmgtfy.com/?q=${newMsg}`;
+        }
+        // Roll - Rolls a random number between 1 - 100
+        else if (mssg.indexOf('/ROLL') > -1) {
+            let _a = lastMsg.toString().split(" "), _b = _a.pop
+            let num = Math.floor(Math.random() * 100);
+            sendText = ` the 100 sided dice gives... \n\n 🎲: *${num}*`;
+        }
+        else if (mssg.indexOf('/PP') > -1) {
+            var pooper = mssg.split(" ").pop()
+            var int_runs = 0;
 
+            sendText = `Every party needs a pooper that's why they invited you 👉${pooper || "everybody"}👈`
 
-    if (lastMsg.toUpperCase().indexOf('@ROAST') > -1) {
-        // @ROAST < Name (gc_user_list) || Random > 
-        let _a = lastMsg.split(" "),
-            _b = _a.pop();
-        var victim = gc_user_list[Math.floor(Math.random() * gc_user_list.length)]
-        var first_user = gc_user_list[Math.floor(Math.random() * gc_user_list.length)];
-        sendText = `*ULPO ROAST CHALLANGE* \n Todays victim: *${victim}* \n First on the stage is _${first_user}_ \n Rules: 1) None, go wild you filthy animals. `;
-    }
+            var _interval = setInterval(() => {
+                int_runs += 1; sendText = `💩 ...Party Pooper... 💩 `;
+                if (int_runs == 4) { clearInterval(_interval); int_runs = 0; }
+                else { sendMessage(null, sendText.trim(), () => { return null }); }
+            }, 5000)
 
-    if (lastMsg.toUpperCase().indexOf('@ROLL') > -1) {
-        let _a = lastMsg.toString().split(" "),
-            _b = _a.pop
-        let num = Math.floor(Math.random() * 100);
-        console.log(_b);
-        sendText = `Dice Roll gives... \n *${num}*`;
-    }
-    if (lastMsg.toUpperCase().indexOf('@HELP') > -1) {
-        sendText = `Cool ${title}! Some commands that you can send me:
-            - *$G* Let me google that for you...
-            - *@ROLL* to get a random number between 1 - 100
-            - *@TIME* to get the current Time
-            - *@JOKE* make pablo tell a joke
-            - *@ROAST* Initiate a Roast Battle, a random victim will be chosen`;
-    }
-
-    if (lastMsg.toUpperCase().indexOf('@TIME') > -1) {
-        sendText = `Don't you have a clock, dude? \n *${new Date()}*`;
-    }
-
-    if (lastMsg.toUpperCase().indexOf('@JOKE') > -1) {
-        sendText = jokeList[rand(jokeList.length - 1)];
+        }
+        else if (mssg.indexOf('/ROAST') > -1) {
+            let _a = lastMsg.split(" "), _b = _a.pop();
+            var victim = gc_user_list[Math.floor(Math.random() * gc_user_list.length)]
+            var first_user = gc_user_list[Math.floor(Math.random() * gc_user_list.length)];
+            var roast_time = 300000; // 5 mins in milliseconds
+            bot_foucused = true;
+            sendText = `
+            🔥 *ULPO ROAST CHALLANGE* 🔥
+            ---------------- 
+            Todays victim:
+            *${victim}* 
+            ----------------             
+            Rules:
+            1 - You have *5 Mins* on the clock!
+            2 - None. Go wild you filthy animals!`;
+            var int_runs = 0;
+            var interval = setInterval(() => {
+                int_runs += 1;
+                sendText = ` So far we have ${int_runs} min(s) on the clock!\nLets keep this Roast _burning_!🔥🔥🔥`
+                if (int_runs == 4) { clearInterval(interval); int_runs = 0; }
+                else { sendMessage(null, sendText.trim(), () => { return null }); }
+            }, roast_time / 5)
+            setTimeout(() => {
+                sendText = `*ULPO ROAST CHALLENGE IS NOW OVER* \n Thank you all for your participation! \n \n ...or lack of participation... \n either way what do i know.`;
+                sendMessage(null, sendText.trim(), () => { return null });
+                bot_foucused = false;
+            }, roast_time)
+        }
+        else if (lastMsg.toUpperCase().indexOf('/HALP') > -1) {
+            sendText = `This is ${title}'s, Pablo the Assitant! 
+            Here are some commands that you can send me:
+                - *OHAYO*: Say Hello  
+                - */ ROLL*: Roll a 100 sided Dice
+                - */ TIME*: Get The Time
+                - */ JOKE*: Tell a Joke
+                - */ ROAST*: Start a Roast!
+                - */ PP*: Who's a party Pooper?
+                - */ G*: Let me Google that for you...
+                
+            And always remember! _Never fear, stay a Queer_.`
+        }
     }
 
     // that's sad, there's not to send back...
     if (!sendText) {
         ignoreLastMsg[title] = lastMsg;
-        console.log(new Date(), 'new message ignored -> ', title, lastMsg);
-        return goAgain(() => {
-            start(chats, cnt + 1)
-        }, 0.1);
+        // console.log(new Date(), 'new message ignored -> ', title, lastMsg);
+        return goAgain(() => { start(chats, cnt + 1) }, 0.1);
     }
 
     console.log(new Date(), 'new message to process, uhull -> ', title, lastMsg);
 
     // select chat and send message
-    if (!processLastMsgOnChat) {
-        selectChat(chat, () => {
-            sendMessage(chat, sendText.trim(), () => {
-                goAgain(() => {
-                    start(chats, cnt + 1)
-                }, 1);
-            });
-        })
-    } else {
-        sendMessage(null, sendText.trim(), () => {
-            goAgain(() => {
-                start(chats, cnt + 1)
-            }, 1);
-        });
-    }
+    if (!processLastMsgOnChat) { selectChat(chat, () => { sendMessage(chat, sendText.trim(), () => { goAgain(() => { start(chats, cnt + 1) }, 1); }); }) }
+    else { sendMessage(null, sendText.trim(), () => { goAgain(() => { start(chats, cnt + 1) }, 1); }); }
 }
 
 function initBotSniffing(bool) {
-    var _x = bool;
-    if (isBotActive == true) {
-        start();
-    }
+
+    $.ajax({
+        url: 'https://wol.jw.org/en/wol/h/r1/lp-e#dailyText', type: 'GET', dataType: 'html', success: function (res) {
+            daily_text = $(res).find('#p63').text();
+            daily_text_body = $(res).find('#p64').text();
+        },
+    })
+    if (isBotActive == true) { start(); }
 }
 
-
-chrome.runtime.sendMessage({
-    init: true
-}, function (res) {
+chrome.runtime.sendMessage({ init: true }, function (res) {
     isBotActive = res.bot_act;
     botInterval = res.bot_int;
     initBotSniffing(isBotActive);
@@ -318,119 +290,3 @@ chrome.runtime.onMessage.addListener((req) => {
     isBotActive = req.botInit;
     initBotSniffing(isBotActive);
 });
-
-
-
-/**
-
-function botResponder() {
-    var phrase = mssg_in[0].replace("$g", '').replace(/\s/g, '+')
-    // WORKS $('button._35EW6').click()
-    console.log("https://www.google.com/search?q=" + phrase)
-}
-function initBot() {
-    setTimeout(() => {
-        $("div._2wP_Y").each(function () {
-            let _a = $(this).find($('span._1wjpf'))
-            console.log('Clicking...')
-            _a.click()
-            console.log(_a.attr('title'))
-        })
-
-    }, 3000)
-}
-function getConvo() {
-    console.log("Checking...")
-
-
-    var txt = $('footer').find($('div.copyable-text.selectable-text'))
-    txt.click()
-
-
-    $('div.message-in').each(function () {
-        let _a = $(this).find($('span.selectable-text'))
-        let _b = $(this).find($('div.copyable-text')).attr('data-pre-plain-text').split(']').pop()
-
-        let text = _a.text()
-        let user = _b.toString().replace(/\s|:/g, "")
-
-        if (text.includes("$g")) {
-            if (!mssg_in.includes(text)) {
-                mssg_in.push(text)
-                botResponder()
-            }
-        }
-    })
-
-    console.log(mssg_in)
-
-}
-
-
-OLD *
-var botCheck = 3000;
-var mssg_in = [];
-var isActive = false;
-var list = document.getElementById('zn-w3x9-console-log');
-var actvBttn = document.getElementById('on_off_switch');
-
-function logger(log) {
-    var entry = document.createElement('li');
-    var time = new Date(Date.now()).toLocaleString('en-US');
-    entry.appendChild(document.createTextNode(time + ": [ULPO-BOT] " + log));
-    list.appendChild(entry);
-    console.log(log)
-}
-
-function initBot() {
-    isActive = !isActive;
-    chrome.storage.sync.set({ isBotActive: isActive });
-
-    if (isActive == true) { getConvo(); logger('STATUS: Active'); }
-    else { logger('STATUS: Inactive'); }
-}
-
-function setBotCheck() {
-    let newVal = document.getElementById("botSnifInt").value
-    chrome.storage.sync.set({ sniffInt: newVal });
-    botCheck = newVal
-}
-window.onload = function () {
-    logger(`Bot Listening...`)
-    console.log("Fired?")
-    chrome.storage.sync.get('sniffInt', function (data) {
-        document.getElementById("botSnifInt").value = data.sniffInt;
-    })
-    chrome.storage.sync.get('isBotActive', function (data) {
-        let status = data.isBotActive
-        if (status) {
-            isActive = status
-            actvBttn.setAttribute("checked", "checked");
-            logger('STATUS: Active');
-        }
-        else {
-            isActive = status
-            actvBttn.removeAttribute("checked", "checked");
-            logger('STATUS: Inactive');
-        }
-    });
-
-    $('ul.tabs').tabs();
-    $('ul.tabs').tabs('select_tab', 'tab_id');
-    document.getElementById('on_off_switch').addEventListener('change', initBot);
-    document.getElementById('botSnifInt').addEventListener('change', setBotCheck);
-}
-
-
-
-function getConvo() {
-    alert("GET CONVO")
-    setInterval(() => {
-        //$('div.message-in').each(function () { mssg_in.indexOf($(this).text()) === -1 ? mssg_in.push($(this).text()) : null })
-    }, botCheck)
-}
-
-
-
-// https://stackoverflow.com/questions/28277312/chrome-extensions-saving-settings
- */
