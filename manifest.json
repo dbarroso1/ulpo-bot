@@ -1,7 +1,7 @@
 {
     "name": "ULPO-Bot",
     "version": "0.0.1",
-    "description": "A Whatsapp Chat Assistant",
+    "description": "A Whatsapp Chat Assistant. FOR PERSONAL USE",
     "manifest_version": 2,
     "browser_action": {
         "default_icon": "src/media/ico/icon128-c.png",
@@ -20,6 +20,9 @@
         "48": "src/media/ico/icon48.png",
         "128": "src/media/ico/icon128.png"
     },
+    "web_accessible_resources": [
+        "src/data/*.json"
+    ],
     "background": {
         "scripts": [
             "src/js/background.js",
