@@ -12,8 +12,8 @@
     <script type="text/javascript" src="/src/materialize/js/materialize.min.js"></script>
 </head>
 
-<body style="width:480px;">
-    <nav>
+<body>
+    <nav class="nav-extended">
         <div class="nav-wrapper white z-depth-0 ">
             <ul class="right bot-switch">
                 <li>
@@ -28,81 +28,159 @@
                 </li>
             </ul>
             <a class="left brand-logo blue-grey-text text-darken-4">- ULPO-Bot -</a>
-
         </div>
-    </nav>
-    <main class="container" style="padding-top:6px;">
-        <div class="col s12">
+        <div class="nav-content">
             <ul class="tabs tabs-fixed-width">
                 <li class="tab col s3"><a class="blue-grey-text text-darken-4" href="#tab2">Settings</a></li>
                 <li class="tab col s3"><a class="blue-grey-text text-darken-4" href="#tab1">Commands</a></li>
                 <li class="tab col s3"><a class="blue-grey-text text-darken-4" href="#tab3">Console</a></li>
             </ul>
-
-            <div id="tab1" class="card z-depth-0" style="margin-top:0;">
-                <div class="card-content">
-                    <ul class="collapsible z-depth-0">
-                        <li>
-                            <div class="collapsible-header valign-wrapper"><code>@TIME</code>Get Current Time</div>
-                            <div class="collapsible-body com-list">
-                                <p class="com-title"><b>Get Current Time</b></p>
-                                <p>Output:
-                                    <p class="com-resp">Don't you have a clock, dude?<br>
-                                        Thu Dec 20 2018 16:59:14 GMT-0500 (Eastern Standard Time)</p>
-                                </p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="collapsible-header valign-wrapper"><code>@G</code>Let me Google that for you</div>
-                            <div class="collapsible-body com-list">
-                                <p class="com-title"><b>Responds with a link to a google search</b></p>
-                                <p>Output:
-                                    <p class="com-resp">Let Me Google that For you... <br>
-                                        https://lmgtfy.com/?q=what+is+love+baby+don't+hurt+me</p>
-                                </p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div id="tab2" class="card z-depth-0" style="margin-top:0;">
-                <div class="card-content">
-                    <div class="row">
-                        <div class="col s6">
-                            <p> Bot sniff interval (ms):
-                                <input style="text-align:left;" id="b1" type="number" step="500" min="500" max="10000">
-                            </p>
-                        </div>
-                        <div class="col s6">
-                            <p> Reply Delay (ms):
-                                <input style="text-align:left;" id="b2" type="number" step="500" min="500" max="10000"></p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12">
-                            <p> Random Talk Rate Seed:
-                                <input style="text-align:left;" id="b3" type="number" max="100"> </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="tab3" class="card z-depth-0" style="margin-top:0;">
-                <div class="card-content">
-                    <div class="terminal-wrapper">
-                        <ul class="terminal" id="zn-w3x9-console-log">
+        </div>
+    </nav>
+    <main style="padding-top:6px;">
+        <div class="wrapper container">
+            <div class="col s12">
+                <div title="bot-commands" id="tab1" class="card z-depth-0" style="margin-top:0;">
+                    <div class="card-content" style="height:800px;">
+                        <ul class="collapsible z-depth-0">
+                            <li>
+                                <div class="collapsible-header valign-wrapper"><code>@TIME</code>Get Current Time</div>
+                                <div class="collapsible-body com-list">
+                                    <p class="com-title"><b>Get Current Time</b></p>
+                                    <p>Output:
+                                        <p class="com-resp">Don't you have a clock, dude?<br>
+                                            Thu Dec 20 2018 16:59:14 GMT-0500 (Eastern Standard Time)</p>
+                                    </p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="collapsible-header valign-wrapper"><code>@G</code>Let me Google that for
+                                    you</div>
+                                <div class="collapsible-body com-list">
+                                    <p class="com-title"><b>Responds with a link to a google search</b></p>
+                                    <p>Output:
+                                        <p class="com-resp">Let Me Google that For you... <br>
+                                            https://lmgtfy.com/?q=what+is+love+baby+don't+hurt+me</p>
+                                    </p>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>
+                <div title="bot-settings" id="tab2" class="card z-depth-0" style="margin-top:0;">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col s12">
+                                <ul class="collection">
+                                    <li class="collection-item row">
+                                        <div class="col s6">
+                                            <p style="font-size:14px"> RiveScript Controller </p>
+                                        </div>
+                                        <div class="col s6">
+                                            <div class="switch right">
+                                                <label>
+                                                    Off
+                                                    <input id="toggle-rive" type="checkbox">
+                                                    <span class="lever"></span>
+                                                    On
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col s12">
+                                <h5>General Settings</h5>
+                            </div>
+                            <div class="col s6">
+                                <p> Bot sniff interval (ms):
+                                    <input style="text-align:left;" id="b1" type="number" step="500" min="500" max="10000">
+                                </p>
+                            </div>
+                            <div class="col s6">
+                                <p> Reply Delay (ms):
+                                    <input style="text-align:left;" id="b2" type="number" step="500" min="500" max="10000"></p>
+                            </div>
+                            <div class="col s12">
+                                <p> Random Talk Rate Seed:
+                                    <input style="text-align:left;" id="b3" type="number" max="100"> </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                                <h5>Programmed Tasks</h5>
+                            </div>
+                            <div class="col s12">
+                                <ul class="collection">
+                                    <li class="collection-item row">
+                                        <div class="col s6">
+                                            <p style="font-size:14px"> Daily Text </p>
+                                        </div>
+                                        <div class="col s6">
+                                            <div class="switch right">
+                                                <label>
+                                                    Off
+                                                    <input id="task-dt" type="checkbox">
+                                                    <span class="lever"></span>
+                                                    On
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item row">
+                                        <div class="col s6">
+                                            <p style="font-size:14px"> Meme of the Day </p>
+                                        </div>
+                                        <div class="col s6">
+                                            <div class="switch right">
+                                                <label>
+                                                    Off
+                                                    <input id="task-motd" type="checkbox">
+                                                    <span class="lever"></span>
+                                                    On
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item row">
+                                        <div class="col s6">
+                                            <p style="font-size:14px"> Random Ron Quotes </p>
+                                        </div>
+                                        <div class="col s6">
+                                            <div class="switch right">
+                                                <label>
+                                                    Off
+                                                    <input id="task-rrq" type="checkbox">
+                                                    <span class="lever"></span>
+                                                    On
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div title="bot-console" id="tab3" class="card z-depth-0" style="margin-top:0;">
+                    <div class="card-content">
+                        <div class="terminal-wrapper">
+                            <ul class="terminal" id="zn-w3x9-console-log">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+
         </div>
     </main>
-    <footer class="page-footer footer-copyright white" style="padding-top: 12px;padding-bottom: 12px;">
+    <!--footer class="page-footer footer-copyright white" style="padding-top: 12px;padding-bottom: 12px;">
         <div class="container blue-grey-text text-lighten-2">
             &copy; 2018 Zinc Digital Corp. - ULPO, llc
             <a class="right" href="#!">More Info</a>
         </div>
-    </footer>
+    </footer-->
     <script type="text/javascript" src="/src/js/popup.js"></script>
 </body>
 
