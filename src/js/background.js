@@ -1,7 +1,7 @@
 const WEB = chrome.webRequest
 var bot_active, bot_interval, bot_response, bot_delay, console_list;
 var pt_dt, pt_rrq, pt_motd;
-var toggle_rive;
+var pablo_fl;
 
 //WEB.onBeforeRequest.addListener((res) => { console.log("[" + res.method + "]: ", res) }, { urls: ["https://web.whatsapp.com/*"] }, ['requestBody']);
 
@@ -11,17 +11,17 @@ chrome.storage.sync.get('botReply', (data) => { bot_delay = data.botReply; })
 chrome.storage.sync.get('task_dt', (data) => { pt_dt = data.task_dt; })
 chrome.storage.sync.get('task_motd', (data) => { pt_motd = data.task_motd; })
 chrome.storage.sync.get('task_rrq', (data) => { pt_rrq = data.task_rrq; })
-chrome.storage.sync.get('toggle_riveScript', (data) => { toggle_rive = data.toggle_riveScript; })
+chrome.storage.sync.get('friend_list', (data) => { pablo_fl = data.friend_list; })
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     let data = {
-        bot_act: bot_active,
-        bot_int: bot_interval,
-        bot_reply: bot_delay,
-        task_dt: pt_dt,
-        task_motd: pt_motd,
-        task_rrq: pt_rrq,
-        toggle_riveScript: toggle_rive,
+        bot_act: bot_active,    // If Bot is set to Active
+        bot_int: bot_interval,  // Bot Sniff Interval
+        bot_reply: bot_delay,   // Bot Reply Delay
+        task_dt: pt_dt,         // Task for Daily Text
+        task_motd: pt_motd,     // Task for Meme of the Day
+        task_rrq: pt_rrq,       // Task for Random Ron Quotes
+        friend_list: pablo_fl,  // Friend List w/ Scores
         logger: console_list
     };
 

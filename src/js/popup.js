@@ -12,7 +12,6 @@ var botTalkInt = document.getElementById('b3');
 var pt_dt = document.getElementById('task-dt');
 var pt_rrq = document.getElementById('task-rrq');
 var pt_motd = document.getElementById('task-motd');
-var rive_tg = document.getElementById('toggle-rive')
 
 const logger = function (log) {
     var entry = document.createElement('li');
@@ -125,7 +124,6 @@ window.onload = () => {
     pt_dt.addEventListener('change', setTaskDT);
     pt_rrq.addEventListener('change', setTaskRrq);
     pt_motd.addEventListener('change', setTaskMotd);
-    rive_tg.addEventListener('change', setToggleRive);
 
     var tabs = document.querySelectorAll('.tabs')
     var collapsible = document.querySelectorAll('.collapsible');

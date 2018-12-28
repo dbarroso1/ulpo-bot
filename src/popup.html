@@ -71,25 +71,6 @@
                     <div class="card-content">
                         <div class="row">
                             <div class="col s12">
-                                <ul class="collection">
-                                    <li class="collection-item row">
-                                        <div class="col s6">
-                                            <p style="font-size:14px"> RiveScript Controller </p>
-                                        </div>
-                                        <div class="col s6">
-                                            <div class="switch right">
-                                                <label>
-                                                    Off
-                                                    <input id="toggle-rive" type="checkbox">
-                                                    <span class="lever"></span>
-                                                    On
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col s12">
                                 <h5>General Settings</h5>
                             </div>
                             <div class="col s6">
@@ -165,9 +146,26 @@
                 </div>
                 <div title="bot-console" id="tab3" class="card z-depth-0" style="margin-top:0;">
                     <div class="card-content">
-                        <div class="terminal-wrapper">
-                            <ul class="terminal" id="zn-w3x9-console-log">
-                            </ul>
+                        <div class="row">
+                            <div class="col s12">
+                                <h5>ULPO Bot Friend Score</h5>
+                                <ul class="collection">
+                                    <li class="collection-item" id>
+                                        <div class="row" style="margin:0;">
+                                            <div class="col s4">Dilean</div>
+                                            <div class="col s4 right-align">Score: <b id="user_score">0</b></div>
+                                            <div class="col s4 right-align">N/A</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col s12">
+                                <h5>ULPO Bot Terminal</h5>
+                                <div class="terminal-wrapper">
+                                    <ul class="terminal" id="zn-w3x9-console-log">
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

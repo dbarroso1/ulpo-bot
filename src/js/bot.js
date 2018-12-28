@@ -12,6 +12,7 @@ var elementConfig = { "chats": [1, 0, 5, 2, 0, 3, 0, 0, 0], "chat_icons": [0, 0,
 var daily_text, daily_text_body;
 var task_dt_toggle, task_motd_toggle, task_rrq_toggle;
 
+var pfl = []; // list of friends and their scores
 var bot_random_talk_rate = 42; // the Number that needs to match in order for the Bot to speak.
 var replyDelay;
 const url = chrome.runtime.getURL('src/data/responses.json');
@@ -32,7 +33,6 @@ function botFocused() {
     if (bot_foucused) { console.log("Bot Busy?", bot_foucused) }
     else { console.log("Bot Busy?", bot_foucused); start() }
 }
-
 function formatAMPM(date) {
     var hours = date.getHours();
     var minutes = date.getMinutes();
@@ -115,6 +115,25 @@ const selectChat = (chat, cb) => {
     }; loopFewTimes();
 }
 
+function friendshipLogger(mssg) {
+    var _un = (_un = mssg.split(":").shift())
+    var user_name = _un.replace(/\s/g, "")
+    var exampleUser = [
+        { name: "Michael", score: 0 },
+        { name: "Carlos", score: 0 },
+        { name: "Damian", score: 0 },
+        { name: "Geniel", score: 0 },
+        { name: "Lemuel", score: 0 },
+        { name: "Nardiel", score: 0 },
+        { name: "Obi", score: 0 },
+        { name: "Ricky", score: 0 },
+        { name: "Yoel", score: 0 },
+        { name: "Dilean", score: 0 }
+    ]
+    chrome.storage.sync.set({ fl: exampleUser },
+        (data) => { console.log(data) })
+
+}
 // Send a message
 const sendMessage = (chat, message, cb) => {
     //avoid duplicate sending
@@ -194,20 +213,29 @@ const start = (_chats, cnt = 0) => {
         if (lastMsg.length >= bot_random_talk_rate && task_dt_toggle) { sendText = bot.ronSwan_list[rand(bot.ronSwan_list.length - 1)]; }
         if (mssg.indexOf('OHAYO') > -1) { sendText = bot.greeting_list[rand(bot.greeting_list.length - 1)]; }
         else if (mssg.indexOf('FLANNYS?') > -1) { sendText = bot.flan_list[rand(bot.flan_list.length - 1)]; }
-        else if (mssg.indexOf('#PIC') > -1) {
-            sendDelay = true;
-            sendText = `https://support.content.office.net/en-us/media/6773672e-cc39-483e-91ca-efa44ba977e9.png`
-        }
         else if (mssg.indexOf('HELLO THERE') > -1) { sendText = `...General Kenobi` }
         else if (mssg.indexOf('LOVE YOU') > -1) { sendText = bot.love_list[rand(bot.love_list.length - 1)]; }
         else if (mssg.indexOf('LINDA') > -1) { sendText = bot.linda_list[rand(bot.linda_list.length - 1)]; }
+        // Pablo Specific Commands
         else if (mssg.indexOf('PABLO TELL ME A JOKE') > -1) { sendText = bot.jokeList[rand(bot.jokeList.length - 1)]; }
+        else if (mssg.indexOf('THANK YOU PABLO') > -1) { sendText = bot.emote_gratefull[rand(bot.emote_gratefull.length - 1)]; friendshipLogger(mssg) }
+        else if (mssg.indexOf('GOOD JOB PABLO') > -1) { sendText = bot.emote_gratefull[rand(bot.emote_gratefull.length - 1)]; }
+        else if (mssg.indexOf('PABLO WHO ARE YOUR FRIENDS?') > -1) {
+            let a = pfl.toString();
+            console.log(pfl);
+            sendText = `test: ${a}`;
+        }
+
         else if (mssg.indexOf('CALLATE') > -1) { sendText = bot.callate_list[rand(bot.callate_list.length - 1)]; }
         else if (mssg.indexOf('SAME') > -1) { sendText = `s a m e....`; }
         else if (mssg.indexOf('KYSLEV') > -1) { sendText = `no, s a m e...`; }
         else if (mssg.indexOf('FASTING') > -1) { sendText = `Fasting is for Homos...`; }
         else if (mssg.indexOf('#DT') > -1) { sendText = `*Todays Text:* \n${daily_text}\n\n${daily_text_body}` }
         else if (mssg.indexOf('#TIME') > -1) { sendText = ` Don't you have a clock, dude? \n🕐:*${new Date()}*`; }
+        else if (mssg.indexOf('#8BALL') > -1) {
+            sendText = `The Magic 8 Ball Replies... \n...\n...\n\n🎱: ${bot.eight_Ball_list[rand(bot.eight_Ball_list.length - 1)]} `;
+            sendDelay = true;
+        }
         else if (mssg.indexOf('#LMGTFY') > -1) {
             let _a = lastMsg.split(" "), _b = _a.shift(), _c = _a.shift();
             let newMsg = _a.toString().replace(/,|\s/g, "+");
@@ -240,6 +268,9 @@ const start = (_chats, cnt = 0) => {
                 if (int_runs == 4) { clearInterval(_interval); int_runs = 0; }
                 else { sendMessage(null, sendText.trim(), () => { return null }); }
             }, 5000)
+        }
+        else if (mssg.indexOf('#JEOPARDY?') > -1) {
+            sendText = ` the 100 sided dice gives... \n\n 🎲: *${num}*`;
         }
         else if (mssg.indexOf('#ROAST') > -1) {
             var endCom = mssg.split(" ").pop()
@@ -315,6 +346,7 @@ chrome.runtime.sendMessage({ init: true }, function (res) {
     task_dt_toggle = res.task_dt;
     task_motd_toggle = res.task_motd;
     task_rrq_toggle = res.task_rrq;
+    pfl = res.friend_list;
     initBotSniffing(isBotActive);
 
 });

@@ -9,7 +9,10 @@ a bot for ulpo
 
 TODO: Need to make Whatsapp Listener, and parse data. 
 
+* trivia url: https://opentdb.com/
+
 ### Commands
+
 * @ROAST <NAME or RANDOM>
 * @Timer <SECONDS or MINUTES>
 * @G <PHRASE TO GOOGLE>
