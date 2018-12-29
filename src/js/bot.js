@@ -210,7 +210,7 @@ const start = (_chats, cnt = 0) => {
 
 
         // Brain Section (Checks Message for Command Keyword)
-        if (lastMsg.length >= bot_random_talk_rate && task_dt_toggle) { sendText = bot.ronSwan_list[rand(bot.ronSwan_list.length - 1)]; }
+       // if (lastMsg.length >= bot_random_talk_rate && task_dt_toggle) { sendText = bot.ronSwan_list[rand(bot.ronSwan_list.length - 1)]; }
         if (mssg.indexOf('OHAYO') > -1) { sendText = bot.greeting_list[rand(bot.greeting_list.length - 1)]; }
         else if (mssg.indexOf('FLANNYS?') > -1) { sendText = bot.flan_list[rand(bot.flan_list.length - 1)]; }
         else if (mssg.indexOf('HELLO THERE') > -1) { sendText = `...General Kenobi` }
