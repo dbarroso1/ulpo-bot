@@ -40,7 +40,14 @@
         "😊",
         "😻😽",
         "🙆‍",
-        "💖"
+        "💖",
+        "No Problem!",
+        "its what i doooo...",
+        "Arigatōgozaimashita",
+        "Arigato!"
+    ],
+    "emote_negative":[
+
     ],
     "flan_list": [
         "Wait for me...",
@@ -82,7 +89,8 @@
         "Manda",
         "No you...",
         "fine...",
-        "[COMMAND]: Callate\n[STATUS]: ACCEPTED\n[FUNCTION-CALLANDOME]: *Initiated*"
+        "Don't tell me how to live my life...",
+        "*[COMMAND]*: Callate\n*[STATUS]*: ACCEPTED\n*[FUNCTION-STFU]*: _Initiated_"
     ],
     "ronSwan_list": [
         "Clear alcohols are for rich women on diets.",

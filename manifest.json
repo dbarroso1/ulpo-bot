@@ -12,6 +12,7 @@
         "storage",
         "webRequest",
         "webRequestBlocking",
+        "clipboardRead",
         "https://web.whatsapp.com/*",
         "https://wol.jw.org/*"
     ],

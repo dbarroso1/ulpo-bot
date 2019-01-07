@@ -35,11 +35,11 @@ h5 {
 }
 
 .switch label input[type=checkbox]:checked+.lever {
-    background-color: #607d8b  !important;
+    background-color: #607d8b !important;
 }
 
 .switch label input[type=checkbox]:checked+.lever:after {
-    background-color: #455a64  !important;
+    background-color: #455a64 !important;
 }
 
 .wrapper {
@@ -72,9 +72,10 @@ h5 {
 }
 
 .terminal-wrapper {
-    height: 300px;
+    height: 150px;
     background: #1d1d1d;
-    border-radius: 6px;
+    border-radius: 3px;
+    border: solid 3px rgb(27, 27, 27);
     overflow-y: scroll;
 }
 

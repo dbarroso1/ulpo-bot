@@ -2,6 +2,7 @@
 var botActive, botSniffInterval, botReplyDelay, botTalkRate;
 var task_toggle_dt, task_toggle_motd, task_toggle_rrq;
 var rive_script_toggle;
+var f_list = []
 
 // Popup DOM Variables
 var botSwitch = document.getElementById('botInitButton');
@@ -97,11 +98,24 @@ window.onload = () => {
         if (task_toggle_rrq) { pt_rrq.setAttribute("checked", "checked"); }
         else { pt_rrq.removeAttribute("checked", "checked"); }
     })
-    chrome.storage.sync.get('toggle_riveScript', (data) => {
-        console.log(data)
-        rive_script_toggle = data.toggle_riveScript;
-        if (rive_script_toggle) { rive_tg.setAttribute("checked", "checked"); }
-        else { rive_tg.removeAttribute("checked", "checked"); }
+    chrome.storage.sync.get('friend_list', (data) => {
+        f_list = data.friend_list
+        for (var c in f_list) {
+            var wrapperElem = document.createElement('li');
+            wrapperElem.className = "collection-item row flow-text"
+
+            var newElement = document.createElement('div');
+            newElement.className = 'col s6';
+            newElement.innerHTML = `<b>${f_list[c].name}</b>`;
+
+            var scoreElem = document.createElement('div');
+            scoreElem.className = 'col s6 center';
+            scoreElem.innerHTML = "Score: " + f_list[c].score;
+
+            wrapperElem.appendChild(newElement)
+            wrapperElem.appendChild(scoreElem)
+            document.getElementById('pablos_friends').appendChild(wrapperElem);
+        }
     })
 
     chrome.storage.sync.get('botInit', (data) => {

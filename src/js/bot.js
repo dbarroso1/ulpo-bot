@@ -13,6 +13,7 @@ var daily_text, daily_text_body;
 var task_dt_toggle, task_motd_toggle, task_rrq_toggle;
 
 var pfl = []; // list of friends and their scores
+console.log(pfl)
 var bot_random_talk_rate = 42; // the Number that needs to match in order for the Bot to speak.
 var replyDelay;
 const url = chrome.runtime.getURL('src/data/responses.json');
@@ -115,24 +116,19 @@ const selectChat = (chat, cb) => {
     }; loopFewTimes();
 }
 
-function friendshipLogger(mssg) {
-    var _un = (_un = mssg.split(":").shift())
-    var user_name = _un.replace(/\s/g, "")
-    var exampleUser = [
-        { name: "Michael", score: 0 },
-        { name: "Carlos", score: 0 },
-        { name: "Damian", score: 0 },
-        { name: "Geniel", score: 0 },
-        { name: "Lemuel", score: 0 },
-        { name: "Nardiel", score: 0 },
-        { name: "Obi", score: 0 },
-        { name: "Ricky", score: 0 },
-        { name: "Yoel", score: 0 },
-        { name: "Dilean", score: 0 }
-    ]
-    chrome.storage.sync.set({ fl: exampleUser },
-        (data) => { console.log(data) })
+function friendshipLogger(mssg, type) {
+    var _un = (_un = mssg.split(":").shift()), user_name = _un.replace(/\s/g, "")
 
+    if (pfl === undefined) { pfl = [{ name: user_name, score: 1 }]; }
+    else {
+        var found = pfl.find(x => x.name === user_name)
+        if (found == undefined) { pfl.push({ name: user_name, score: 1 }); }
+        else {
+            if (type === 0) { found.score = found.score + 1; }
+            else { found.score = found.score - 1; }
+        }
+        chrome.storage.sync.set({ 'friend_list': pfl })
+    }
 }
 // Send a message
 const sendMessage = (chat, message, cb) => {
@@ -209,31 +205,40 @@ const start = (_chats, cnt = 0) => {
         let mssg = lastMsg.toUpperCase();
 
 
-        // Brain Section (Checks Message for Command Keyword)
-       // if (lastMsg.length >= bot_random_talk_rate && task_dt_toggle) { sendText = bot.ronSwan_list[rand(bot.ronSwan_list.length - 1)]; }
+        /* Brain Section (Checks Message for Command Keyword)  */
+        // Pablo One word Commands
         if (mssg.indexOf('OHAYO') > -1) { sendText = bot.greeting_list[rand(bot.greeting_list.length - 1)]; }
+        else if (mssg.indexOf('FLANNIS?') > -1) { sendText = bot.flan_list[rand(bot.flan_list.length - 1)]; }
         else if (mssg.indexOf('FLANNYS?') > -1) { sendText = bot.flan_list[rand(bot.flan_list.length - 1)]; }
-        else if (mssg.indexOf('HELLO THERE') > -1) { sendText = `...General Kenobi` }
-        else if (mssg.indexOf('LOVE YOU') > -1) { sendText = bot.love_list[rand(bot.love_list.length - 1)]; }
         else if (mssg.indexOf('LINDA') > -1) { sendText = bot.linda_list[rand(bot.linda_list.length - 1)]; }
-        // Pablo Specific Commands
-        else if (mssg.indexOf('PABLO TELL ME A JOKE') > -1) { sendText = bot.jokeList[rand(bot.jokeList.length - 1)]; }
-        else if (mssg.indexOf('THANK YOU PABLO') > -1) { sendText = bot.emote_gratefull[rand(bot.emote_gratefull.length - 1)]; friendshipLogger(mssg) }
-        else if (mssg.indexOf('GOOD JOB PABLO') > -1) { sendText = bot.emote_gratefull[rand(bot.emote_gratefull.length - 1)]; }
-        else if (mssg.indexOf('PABLO WHO ARE YOUR FRIENDS?') > -1) {
-            let a = pfl.toString();
-            console.log(pfl);
-            sendText = `test: ${a}`;
-        }
-
-        else if (mssg.indexOf('CALLATE') > -1) { sendText = bot.callate_list[rand(bot.callate_list.length - 1)]; }
+        else if (mssg.indexOf('HELLO THERE') > -1) { sendText = `...General Kenobi` }
         else if (mssg.indexOf('SAME') > -1) { sendText = `s a m e....`; }
         else if (mssg.indexOf('KYSLEV') > -1) { sendText = `no, s a m e...`; }
-        else if (mssg.indexOf('FASTING') > -1) { sendText = `Fasting is for Homos...`; }
+        else if (mssg.indexOf('FASTING') > -1) { sendText = `Fasting is for homos...\n\n\n...and broke niggas.`; }
+        // Pablo Multi Phrase Commands
+        else if (mssg.indexOf('PABLO TELL ME A JOKE') > -1) { sendText = bot.jokeList[rand(bot.jokeList.length - 1)]; }
+        else if (mssg.indexOf('CALLATE') > -1) { sendText = bot.callate_list[rand(bot.callate_list.length - 1)]; friendshipLogger(mssg, 1) }
+        else if (mssg.indexOf('SHUT UP PABLO') > -1) { sendText = bot.callate_list[rand(bot.callate_list.length - 1)]; friendshipLogger(mssg, 1) }
+        // Thank you Pablo - Like System Commands
+        else if (mssg.indexOf('LOVE YOU PABLO') > -1) { sendText = bot.love_list[rand(bot.love_list.length - 1)]; friendshipLogger(mssg, 0) }
+        else if (mssg.indexOf('THANK YOU PABLO') > -1) { sendText = bot.emote_gratefull[rand(bot.emote_gratefull.length - 1)]; friendshipLogger(mssg, 0) }
+        else if (mssg.indexOf('THANKS PABLO') > -1) { sendText = bot.emote_gratefull[rand(bot.emote_gratefull.length - 1)]; friendshipLogger(mssg, 0) }
+        else if (mssg.indexOf('GOOD JOB PABLO') > -1) { sendText = bot.emote_gratefull[rand(bot.emote_gratefull.length - 1)]; friendshipLogger(mssg, 0) }
+        else if (mssg.indexOf('PABLO WHO ARE YOUR FRIENDS?') > -1) {
+            var _fl = pfl.sort(), _l = pfl.length - 1;
+            sendText = `
+            I have a few friends... ${pfl.length} in total...
+            But so far my best friend is *${_fl[0].name}* with a score of *${_fl[0].score}*
+            In last is *${_fl[_l].name}* with *${_fl[_l].score}*`;
+        }
+
+        else if (mssg.indexOf('#FL') > -1) {
+            sendText = `*list length*: ${pfl.length}\n*Inside*:\n${JSON.stringify(pfl)}`;
+        }
         else if (mssg.indexOf('#DT') > -1) { sendText = `*Todays Text:* \n${daily_text}\n\n${daily_text_body}` }
         else if (mssg.indexOf('#TIME') > -1) { sendText = ` Don't you have a clock, dude? \n🕐:*${new Date()}*`; }
         else if (mssg.indexOf('#8BALL') > -1) {
-            sendText = `The Magic 8 Ball Replies... \n...\n...\n\n🎱: ${bot.eight_Ball_list[rand(bot.eight_Ball_list.length - 1)]} `;
+            sendText = `The Magic 8 Ball Replies... \n..\n.\n\n🎱: ${bot.eight_Ball_list[rand(bot.eight_Ball_list.length - 1)]} `;
             sendDelay = true;
         }
         else if (mssg.indexOf('#LMGTFY') > -1) {
@@ -248,19 +253,16 @@ const start = (_chats, cnt = 0) => {
             sendDelay = true;
         }
         else if (mssg.indexOf('#YT') > -1) {
-            let _a = lastMsg.split(" "), _b = _a.shift(), _c = _a.shift();
-            let newMsg = _a.toString().replace(/,|\s/g, "+");
+            let _a = lastMsg.split(" "), _b = _a.shift(), _c = _a.shift(), newMsg = _a.toString().replace(/,|\s/g, "+");
             sendText = `Here's what I found: \nhttps://www.youtube.com/results?search_query=${newMsg}`;
             sendDelay = true;
         }
         else if (mssg.indexOf('#ROLL') > -1) {
-            let _a = lastMsg.toString().split(" "), _b = _a.pop
-            let num = Math.floor(Math.random() * 100);
+            let _a = lastMsg.toString().split(" "), _b = _a.pop, num = Math.floor(Math.random() * 100);
             sendText = ` the 100 sided dice gives... \n\n 🎲: *${num}*`;
         }
         else if (mssg.indexOf('#PP') > -1) {
-            var pooper = mssg.split(" ").pop()
-            var int_runs = 0;
+            var pooper = mssg.split(" ").pop(), int_runs = 0;
             sendText = `Every party needs a pooper that's why they invited you 👉${pooper || "everybody"}👈`
 
             var _interval = setInterval(() => {
@@ -268,9 +270,6 @@ const start = (_chats, cnt = 0) => {
                 if (int_runs == 4) { clearInterval(_interval); int_runs = 0; }
                 else { sendMessage(null, sendText.trim(), () => { return null }); }
             }, 5000)
-        }
-        else if (mssg.indexOf('#JEOPARDY?') > -1) {
-            sendText = ` the 100 sided dice gives... \n\n 🎲: *${num}*`;
         }
         else if (mssg.indexOf('#ROAST') > -1) {
             var endCom = mssg.split(" ").pop()
@@ -291,20 +290,20 @@ const start = (_chats, cnt = 0) => {
                 ----------------             
                 Rules:
                 1 - You have *5 Mins* on the clock!
-                2 - None. Go wild you filthy animals!`;
+                2 - Nothing else, Go wild you filthy animals!`;
 
                 var interval = setInterval(() => {
                     int_runs += 1; int_run_op = (5 - int_runs)
                     sendText = ` So far we have *${int_runs} min(s)*  on the clock! \nOnly *${int_run_op} min(s)* left. \nLets keep this Roast _burning_!🔥🔥🔥`
                     if (int_runs == 5) { clearInterval(interval); int_runs = 0; }
                     else { sendMessage(null, sendText.trim(), () => { return null }); }
-                }, 2000)
+                }, roast_time / 5)
 
                 setTimeout(() => {
                     console.log("ROAST OVER")
                     sendText = `*ULPO ROAST CHALLENGE IS NOW OVER* \n Thank you all for your participation! \n \n ...or lack of participation... \n either way what do i know.`;
                     sendMessage(null, sendText.trim(), () => { botFocused() });
-                }, 10000)
+                }, roast_time)
             }
         }
         else if (lastMsg.toUpperCase().indexOf('#HELP') > -1) {
@@ -320,6 +319,13 @@ const start = (_chats, cnt = 0) => {
                     - *# YT*: Search Youtube...
                     
                 And always remember! _Never fear, stay a Queer_.`
+        }
+        else if (mssg.indexOf('#PIC') > -1) {
+            // Work in Progress, Bot can paste image, but image needs be put in clip board manually
+            // Need way of adding to clipboard programatically
+            console.log("PIC?")
+            document.execCommand('paste')
+            sendText = `null`
         }
 
         // that's sad, there's nothing to send back...
@@ -360,12 +366,3 @@ chrome.runtime.onMessage.addListener((req) => {
     task_rrq_toggle = req.task_rrq;
     initBotSniffing(isBotActive);
 });
-
-/**
- * 
-    if (millisTill10 < 0) { millisTill10 += 86400000; }
-    setTimeout(function () {
-        sendText = `*Todays Text:* \n ${daily_text} \n \n ${daily_text_body}`
-        sendMessage(null, sendText.trim(), () => { return null });
-    }, millisTill10);
- */
